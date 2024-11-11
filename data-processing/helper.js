@@ -23,10 +23,15 @@ export function writeData() {
 }
 
 export function getColor(path) {
-    return ColorThief.getColor(path)
-        .then(color => {
-            console.log(`取得照片顏色: ${path}`);
-            return color;
-        })
-        .catch(err => console.error(err));
+    return new Promise((resolve, reject) => {
+        ColorThief.getColor(path)
+            .then(color => {
+                console.log(`取得照片顏色: ${path}`);
+                resolve(color);
+            })
+            .catch(err => {
+                console.error(err);
+                reject(err);
+            });
+    });
 }
