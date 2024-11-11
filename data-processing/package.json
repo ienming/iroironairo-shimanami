@@ -1,6 +1,7 @@
 {
   "type": "module",
   "dependencies": {
+    "colorthief": "^2.6.0",
     "exif-parser": "^0.1.12"
   }
 }

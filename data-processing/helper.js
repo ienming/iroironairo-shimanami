@@ -1,5 +1,6 @@
 import exifParser from 'exif-parser';
 import { writeFile } from 'node:fs';
+import ColorThief from 'colorthief';
 
 export function getGpsCoordinates(buffer) {
     const parser = exifParser.create(buffer);
@@ -18,9 +19,14 @@ export function getGpsCoordinates(buffer) {
 export function writeData() {
     writeFile('message.txt', 'Hello Node.js', 'utf8', () => {
         console.log('success');
-    }); 
+    });
 }
 
-export function getColor() {
-    console.log('get main color from photo');
+export function getColor(path) {
+    return ColorThief.getColor(path)
+        .then(color => {
+            console.log(`取得照片顏色: ${path}`);
+            return color;
+        })
+        .catch(err => console.error(err));
 }
