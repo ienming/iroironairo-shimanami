@@ -1,12 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import getGpsCoordinates from './helper.js';
+import { getGpsCoordinates } from './helper.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const folderPath = path.join(__dirname, '../../照片/Shimanami');
+const folderPath = path.join(__dirname, '../tests');
 const availableFormat = ['JPG', 'JPEG', 'jpg', 'jpeg'];
 const allImgs = [];
 

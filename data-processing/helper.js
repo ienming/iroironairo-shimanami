@@ -1,6 +1,7 @@
 import exifParser from 'exif-parser';
+import { writeFile } from 'node:fs';
 
-export default function getGpsCoordinates(buffer) {
+export function getGpsCoordinates(buffer) {
     const parser = exifParser.create(buffer);
     const result = parser.parse();
     const gpsData = result.tags;
@@ -12,4 +13,14 @@ export default function getGpsCoordinates(buffer) {
     } else {
         return null; // 無 GPS 資訊
     }
+}
+
+export function writeData() {
+    writeFile('message.txt', 'Hello Node.js', 'utf8', () => {
+        console.log('success');
+    }); 
+}
+
+export function getColor() {
+    console.log('get main color from photo');
 }
