@@ -68,6 +68,7 @@ export default {
         return response.json();
       })
       .then((data) => {
+        // 利用 topojson.feature 把 topoJSON 格式再轉回 geoJSON 以獲得 feature 資料
         this.counties = topojson.feature(data, data.objects.japan).features;
         console.log(this.counties);
       });
