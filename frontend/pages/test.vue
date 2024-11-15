@@ -1,26 +1,28 @@
 <template>
-    <div>
-      <img :src="imageUrl" alt="Firebase Image" v-if="imageUrl" />
-      <p v-else>Loading image...</p>
-    </div>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted } from 'vue';
-  import { getDownloadURL, ref as storageRef } from 'firebase/storage';
-  
-  const imageUrl = ref(null);
-  
-  onMounted(async () => {
-    const { $fireStorage } = useNuxtApp(); // 使用 $fireStorage
-  
-    const imagePath = storageRef($fireStorage, 'photos/IMG_4535.JPG'); // 指定 Firebase Storage 中的路徑
-  
-    try {
-      imageUrl.value = await getDownloadURL(imagePath); // 取得圖片的下載 URL
-    } catch (error) {
-      console.error("Error fetching image URL:", error);
-    }
-  });
-  </script>
-  
+  <div>
+    <img :src="imageUrl" alt="Firebase Image" v-if="imageUrl" style="width: 600px" />
+    <p v-else>Loading image...</p>
+  </div>
+</template>
+
+<script setup>
+import { getDownloadURL, ref as storageRef } from 'firebase/storage';
+
+const imageUrl = ref(null);
+
+onMounted(async () => {
+  //useNuxtApp 取得 nuxt context
+  //nuxtApp.provide 的變數名稱前方會加上一個 $
+  //格式為 nuxtApp.provide(name, value)
+  //此處是 plugins/firebase.client.js 裡面 provide 出來了 $firestorage
+  const { $fireStorage } = useNuxtApp();
+
+  const imagePath = storageRef($fireStorage, 'photos/IMG_4535.JPG');
+
+  try {
+    imageUrl.value = await getDownloadURL(imagePath);
+  } catch (error) {
+    console.error("Error fetching image URL:", error);
+  }
+});
+</script>
