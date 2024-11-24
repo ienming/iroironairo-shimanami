@@ -14,13 +14,7 @@
         :key="location.name"
         :cx="project(location.coords).x"
         :cy="project(location.coords).y"
-        @click.stop="
-          zoomInLocation(
-            location.name,
-            project(location.coords).x,
-            project(location.coords).y
-          )
-        "
+        @click.stop="zoomInLocation(location.id)"
         fill="#17a6ff"
         r="2"
         class="marker"
@@ -37,6 +31,12 @@ import * as d3 from "d3";
 import * as topojson from "topojson-client";
 
 export default {
+  props: {
+    zoomTo: {
+      type: String,
+      default: '',
+    }
+  },
   computed: {
     routes() {
       const points = this.locations.map((location) => {
@@ -54,13 +54,18 @@ export default {
       projection: undefined,
       counties: [],
       locations: [
-        { name: "神戶三宮", coords: [135.1955, 34.6958] },
-        { name: "京都", coords: [135.7585, 34.9858] },
-        { name: "靜岡", coords: [138.38333, 34.98333] },
-        { name: "日光", coords: [139.619, 36.7523] },
+        { name: "神戶三宮", id: "sannomiya", coords: [135.1955, 34.6958] },
+        { name: "京都", id: "kyoto", coords: [135.7585, 34.9858] },
+        { name: "靜岡", id: "shizuoka", coords: [138.38333, 34.98333] },
+        { name: "日光", id: "nikko", coords: [139.619, 36.7523] },
       ],
       nowClickOnLoc: "",
     };
+  },
+  watch: {
+    zoomTo(newVal) {
+      this.zoomInLocation(newVal);
+    }
   },
   created() {
     fetch("/japan.json")
@@ -101,7 +106,17 @@ export default {
       };
       return position;
     },
-    zoomInLocation(name, x, y) {
+    zoomInLocation(id) {
+      console.log(`zoomInLocation to ${id}`);
+      const location = this.locations.find(el => el.id === id);
+
+      if (!location) {
+        return;
+      }
+
+      const x = this.project(location.coords).x;
+      const y = this.project(location.coords).y;
+      const name = location.name;
       this.nowClickOnLoc = name;
       this.map
         .transition()
@@ -110,14 +125,14 @@ export default {
           this.configZoom().transform,
           d3.zoomIdentity
             .translate(this.mapWidth / 2, this.mapHeight / 2)
-            .scale(20)
+            .scale(10)
             .translate(-x, -y)
         );
     },
     configZoom() {
       return d3
         .zoom()
-        .scaleExtent([1, 8])
+        .scaleExtent([1, 10])
         .translateExtent([
           [0, 0],
           [this.mapWidth, this.mapHeight],
@@ -133,8 +148,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.marker {
-  cursor: pointer;
+.map-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -1;
 }
 
 .panel {
