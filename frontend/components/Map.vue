@@ -6,18 +6,22 @@
         :d="pathGenerator(county)"
         fill="#c9f1ff"
         stroke="#84dbfa"
-        stroke-width="0.5"
+        :stroke-width="0.5 / nowZoomRatio"
       />
-      <path :d="routes" fill="none" stroke="black" stroke-width="2" />
+      <path
+        :d="routes"
+        fill="none"
+        stroke="black"
+        :stroke-width="nowZoomRatio < 10 ? 2 : 0.25" />
       <circle
         v-for="location of locations"
         :key="location.name"
         :cx="project(location.coords).x"
         :cy="project(location.coords).y"
-        @click.stop="zoomInLocation(location.id)"
+        :r="nowZoomRatio < 10 ? 2 : 0.75"
         fill="#17a6ff"
-        r="2"
         class="marker"
+        @click.stop="zoomInLocation(location.id)"
       />
     </g>
   </svg>
@@ -60,6 +64,7 @@ export default {
         { name: "日光", id: "nikko", coords: [139.619, 36.7523] },
       ],
       nowClickOnLoc: "",
+      nowZoomRatio: 1,
     };
   },
   watch: {
@@ -128,6 +133,9 @@ export default {
             .scale(10)
             .translate(-x, -y)
         );
+      this.$nextTick(() => {
+        this.nowZoomRatio = 10;
+      });
     },
     configZoom() {
       return d3
@@ -152,7 +160,16 @@ export default {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: -1;
+}
+
+.marker {
+  transform-origin: center;
+  transform-box: fill-box;
+  transition: .2s ease-in;
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.5);
+  }
 }
 
 .panel {

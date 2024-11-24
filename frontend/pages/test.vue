@@ -1,6 +1,5 @@
 <template>
   <section>
-    <Map :zoom-to="nowZoomedTo" />
     <div
       class="container">
       <p>contents</p>
@@ -47,6 +46,7 @@
         ...
       </div>
     </div>
+    <Map :zoom-to="nowZoomedTo" />
   </section>
 </template>
 
@@ -115,7 +115,10 @@ function observeHandler(entries, observer) {
 }
 
 .container {
+  position: relative;
+  z-index: 1;
   min-height: 1800px;
   border: 1px solid #000;
+  pointer-events: none;
 }
 </style>
