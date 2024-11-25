@@ -1,7 +1,10 @@
 <template>
-  <section>
+  <section class="container">
     <div
-      class="container">
+      class="content-container">
+      <div style="height: 85vh"></div>
+      <h1>色々ないろ</h1>
+      <h4>iroironairo</h4>
       <p>contents</p>
       <button @click="loadImage('IMG_4535')">Get image</button>
       <div v-if="imageIsLoading">
@@ -116,9 +119,15 @@ function observeHandler(entries, observer) {
 
 .container {
   position: relative;
+}
+
+.content-container {
+  position: absolute;
   z-index: 1;
+  right: 0;
+  width: 30vw;
   min-height: 1800px;
-  border: 1px solid #000;
-  pointer-events: none;
+  padding: 12px;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
 }
 </style>

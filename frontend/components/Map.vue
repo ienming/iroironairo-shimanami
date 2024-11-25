@@ -129,7 +129,7 @@ export default {
         .call(
           this.configZoom().transform,
           d3.zoomIdentity
-            .translate(this.mapWidth / 2, this.mapHeight / 2)
+            .translate(this.mapWidth / 3, this.mapHeight / 2)
             .scale(10)
             .translate(-x, -y)
         );
@@ -174,7 +174,7 @@ export default {
 
 .panel {
   position: fixed;
-  right: 30px;
+  left: 30px;
   top: 30px;
   padding: 8px;
   border-radius: 8px;
