@@ -26,10 +26,13 @@ const allImgs = await Promise.all(
                 await compressPhoto(imgPath, compressedFolderPath);
     
                 if (coordinates) {
-                    coordinates.name = fileName;
-                    coordinates.color = color;
-                    console.log(coordinates);
-                    return coordinates;
+                    const result = {};
+                    result.coords = [coordinates.longitude, coordinates.latitude];
+                    result.name = fileName;
+                    result.id = fileName;
+                    result.color = color;
+                    // console.log(result);
+                    return result;
                 }
             } catch (error) {
                 return null;

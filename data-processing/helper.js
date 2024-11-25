@@ -10,8 +10,8 @@ export function getGpsCoordinates(buffer) {
     const gpsData = result.tags;
 
     if (gpsData && gpsData.GPSLatitude && gpsData.GPSLongitude) {
-        const latitude = `${gpsData.GPSLatitude} ${gpsData.GPSLatitudeRef}`;
-        const longitude = `${gpsData.GPSLongitude} ${gpsData.GPSLongitudeRef}`;
+        const latitude = `${gpsData.GPSLatitude}`;
+        const longitude = `${gpsData.GPSLongitude}`;
         return { latitude, longitude };
     } else {
         return null; // 無 GPS 資訊
@@ -20,9 +20,10 @@ export function getGpsCoordinates(buffer) {
 
 export async function getColor(path) {
     try {
-        const color = await ColorThief.getColor(path);
+        const colors = await ColorThief.getColor(path);
         console.log(`取得照片顏色: ${path}`);
-        return color;
+        const result = '#' + colors.map(x => x.toString(16)).join('');
+        return result;
     } catch (error) {
         throw new Error(`取得照片顏色失敗: ${error.message}`);
     }
